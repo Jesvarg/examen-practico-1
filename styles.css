@@ -1,0 +1,539 @@
+:root {
+    --primary: #4CAF50;
+    --secondary: #2196F3;
+    --light-bg: #f5f5f5;
+    --dark-bg: #1a1a1a;
+    --text-light: #2c3e50;
+    --text-dark: #ecf0f1;
+    --border-color: #ddd;
+    --success: #2ecc71;
+    --warning: #f1c40f;
+    --danger: #e74c3c;
+    --table-header-bg: #f8f9fa;
+    --edit-input-bg: #ffffff;
+    --edit-input-border: #e0e0e0;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    background-color: var(--light-bg);
+    color: var(--text-light);
+    transition: all 0.3s ease;
+  }
+  
+  body.dark {
+    background-color: var(--dark-bg);
+    color: var(--text-dark);
+  }
+  
+  body.dark .tasks-table {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  body.dark .tasks-table th {
+    background-color: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  body.dark .tasks-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+  
+  body.dark .tasks-table td {
+    color: var(--text-dark);
+  }
+  
+  body.dark .tasks-table .actions button {
+    color: var(--text-dark);
+  }
+  
+  body.dark .tasks-table .actions button:hover {
+    background: rgba(76, 175, 80, 0.1);
+  }
+  
+  body.dark .edit-container {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  body.dark .edit-input {
+    background: var(--edit-input-bg);
+    border-color: var(--edit-input-border);
+    color: var(--text-dark);
+  }
+  
+  body.dark .edit-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+  
+  body.dark .save {
+    background: var(--primary);
+    color: white;
+  }
+  
+  body.dark .save:hover {
+    background: #45a049;
+  }
+  
+  body.dark .save:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+  }
+  
+  body.dark .cancel {
+    background: var(--danger);
+    color: white;
+  }
+  
+  body.dark .cancel:hover {
+    background: #c0392b;
+  }
+  
+  .container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+  }
+  
+  .theme-toggle-label {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .theme-toggle {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .theme-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+  
+  .theme-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  .theme-toggle:checked + .theme-toggle-slider {
+    background-color: var(--primary);
+  }
+  
+  .theme-toggle:checked + .theme-toggle-slider:before {
+    transform: translateX(26px);
+  }
+  
+  .app-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  
+  form {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .form-group {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  input, select, button {
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: inherit;
+    transition: all 0.3s ease;
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+  
+  .add-task-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .add-task-btn:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+  }
+  
+  .task-controls {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .task-counter {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .filter-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .filter-buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .filter-buttons button.active {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .history-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .history-controls button {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .history-controls button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .tasks-table-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .tasks-table th {
+    background-color: var(--table-header-bg);
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-light);
+  }
+  
+  .tasks-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .tasks-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .tasks-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .tasks-table tr:hover {
+    background-color: rgba(76, 175, 80, 0.05);
+  }
+  
+  .tasks-table .task-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 300px;
+  }
+  
+  .tasks-table .task-priority {
+    font-size: 1.2rem;
+  }
+  
+  .tasks-table .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .tasks-table .actions button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .tasks-table .actions button:hover {
+    background: rgba(76, 175, 80, 0.1);
+  }
+  
+  .edit-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    position: relative;
+  }
+  
+  .edit-input {
+    padding: 0.5rem;
+    border: 1px solid var(--edit-input-border);
+    border-radius: 4px;
+    background: var(--edit-input-bg);
+    color: inherit;
+    flex: 1;
+    min-width: 150px;
+    transition: all 0.3s ease;
+  }
+  
+  .edit-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+  }
+  
+  .save, .cancel {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .save {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .save:hover {
+    background: #45a049;
+  }
+  
+  .save:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  
+  .cancel {
+    background: var(--danger);
+    color: white;
+  }
+  
+  .cancel:hover {
+    background: #c0392b;
+  }
+  
+  /* Animaciones */
+  @keyframes fadeOut {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  
+  .fade-out {
+    animation: fadeOut 0.3s forwards;
+  }
+  
+  /* Modal de Edición */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+  }
+  
+  .modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    animation: modalFadeIn 0.3s ease;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+  }
+  
+  .close-modal {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-light);
+  }
+  
+  .close-modal:hover {
+    color: var(--danger);
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  .modal-body .edit-input {
+    margin-bottom: 1rem;
+    width: 100%;
+  }
+  
+  .modal-footer {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+  
+  .modal-footer button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .save {
+    background: var(--primary);
+    color: white;
+  }
+  
+  .save:hover {
+    background: #45a049;
+  }
+  
+  .cancel {
+    background: var(--danger);
+    color: white;
+  }
+  
+  .cancel:hover {
+    background: #c0392b;
+  }
+  
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    .form-group {
+      grid-template-columns: 1fr;
+    }
+    
+    .filter-buttons {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .tasks-table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+    
+    .form-group {
+      gap: 0.5rem;
+    }
+    
+    .tasks-table th {
+      font-size: 0.9rem;
+    }
+  }

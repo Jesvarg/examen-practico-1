@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Gestor de Tareas</h1>
+            <label for="themeToggle" class="theme-toggle-label">
+                <input type="checkbox" id="themeToggle" class="theme-toggle">
+                <span class="theme-toggle-slider"></span>
+            </label>
+        </header>
+
+        <div class="app-grid">
+            <form id="taskForm">
+                <div class="form-group">
+                    <input type="text" id="taskText" placeholder="Nueva tarea" required />
+                    <input type="date" id="taskDate" required />
+                    <select id="taskPriority">
+                        <option value="alta">🔥 Alta</option>
+                        <option value="media">🔔 Media</option>
+                        <option value="baja">⏰ Baja</option>
+                    </select>
+                    <button type="submit" class="add-task-btn">➕ Agregar</button>
+                </div>
+            </form>
+
+            <div class="task-controls">
+                <div class="task-counter"></div>
+                <div class="filter-buttons">
+                    <button data-filter="todas" class="active">Todas</button>
+                    <button data-filter="completadas">✅ Completadas</button>
+                    <button data-filter="pendientes">⏳ Pendientes</button>
+                </div>
+                <div class="history-controls">
+                    <button id="undoButton" disabled><i class="fas fa-undo"></i></button>
+                    <button id="redoButton" disabled><i class="fas fa-redo"></i></button>
+                </div>
+            </div>
+
+            <div class="tasks-table-container">
+                <table id="tasksTable" class="tasks-table">
+                    <thead>
+                        <tr>
+                            <th>Estado</th>
+                            <th>Tarea</th>
+                            <th>Prioridad</th>
+                            <th>Fecha Límite</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Editar Tarea</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="editTaskText" class="edit-input" placeholder="Tarea" required />
+                <input type="date" id="editTaskDate" class="edit-input" required />
+                <select id="editTaskPriority" class="edit-input">
+                    <option value="alta">🔥 Alta</option>
+                    <option value="media">🔔 Media</option>
+                    <option value="baja">⏰ Baja</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="save">Guardar</button>
+                <button class="cancel">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
